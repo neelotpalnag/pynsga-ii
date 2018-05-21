@@ -1,0 +1,8 @@
+/.cache/
+/venv/
+__pycache__
+.Python
+/.tox/
+/build/
+/dist/
+/.idea/
