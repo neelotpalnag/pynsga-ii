@@ -1,9 +1,10 @@
 import random
+from operations.evaluate import evaluate
 
 # POLYNOMIAL MUTATION for Real Coded GA
 
 
-def mutate(num_objectives, X_pool, X_hi, X_lo, mui, pop_size, seed):
+def mutate(num_objectives, X_pool, X_hi, X_lo, mui, pop_size):
     # The method "mutate" requires the following parameters:
     # X_pool : The population from the previous generation
     # X_hi : Max. Values of Xi
@@ -15,10 +16,21 @@ def mutate(num_objectives, X_pool, X_hi, X_lo, mui, pop_size, seed):
     X_mut = []
     for i in range(0, pop_size, 1):
         xm = []
-        random.seed(seed)
+        random.seed(i)
         rn = random.random()
+
         for j in range(0, num_params, 1):
-            xm.append(X_pool[i][j] + (X_hi[j] - X_lo[j])*delta_calculator(rn, mui))
+            val = X_pool[i][j] + (X_hi[j] - X_lo[j])*delta_calculator(rn, mui)
+            if val > X_hi[j]:
+                val = X_hi[j]
+            elif val < X_lo[j]:
+                val = X_lo[j]
+            xm.append(val)
+
+        x_ev = xm
+        for k in range(0, num_objectives, 1):
+            xm.append(evaluate(k, x_ev))
+
         X_mut.append(xm)
 
     return X_mut

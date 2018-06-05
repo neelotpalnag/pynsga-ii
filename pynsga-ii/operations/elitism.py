@@ -6,7 +6,6 @@ from .evaluate import evaluate
 def elitism(num_obj, X_parent, X_daughter, num_params):
 
     X_pool = X_parent + X_daughter
-
     pop_size = len(X_parent)
 
     # STEP 1 : Create fronts of all 2 x pop_size individuals in the combined pool of parent and daughter

@@ -13,7 +13,7 @@ def cross_sbx(num_obj, X_pool, cxi, pop_size, num_params, seed):
 
     # Step 1 : Randomly select two members from the Mating Pool
     X_daughters = []
-    for i in range(0, pop_size/2, 1):
+    for i in range(0, int(pop_size/2), 1):
         # Choose 2 members randomly:
         random.seed(seed)
         rn = random.sample(range(0, pop_size-1), 2) # List of 2 random numbers
