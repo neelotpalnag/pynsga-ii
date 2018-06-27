@@ -1,4 +1,6 @@
-# NSGA-II ImplemeIt implements the NSGA-II algorithm developed by K. Deb et.al.
+# NSGA-II Implementation in Python
+
+This python program implements the NSGA-II algorithm developed by K. Deb et.al. for any desired number of objectives, generations & parameters. Tested on all ZDT & DTLZ series problems.
 
 ## Getting Started
 
