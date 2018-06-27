@@ -10,12 +10,12 @@ import random
 from operations.evaluate import evaluate
 
 
-def initialize(X_hi, X_lo, pop_size, num_objectives):
+def initialize(X_hi, X_lo, pop_size, num_objectives, seed):
 
+    random.seed(seed)
     X_init = [[0 for x in range(len(X_hi)+num_objectives)] for y in range(pop_size)]
     for i in range(0, pop_size, 1):
         for j in range(0, len(X_hi), 1):
-            random.seed(j)
             rn = random.uniform(0, 1)
             X_init[i][j] = round(X_lo[j] + rn * (X_hi[j] - X_lo[j]), 4)
 

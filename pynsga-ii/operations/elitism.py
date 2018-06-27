@@ -6,23 +6,23 @@ from .evaluate import evaluate
 def elitism(num_obj, X_parent, X_daughter, num_params):
 
     X_pool = X_parent + X_daughter
+    pool_size = len(X_pool)
     pop_size = len(X_parent)
 
     # STEP 1 : Create fronts of all 2 x pop_size individuals in the combined pool of parent and daughter
 
     # F_evaluated is a 2D list, with elements as [Objective][Individual]
     # F_evaluated[i][j] implies the value of the (i)th objective for the (j)th individual
-    F_evaluated = [[0 for x in range(0, num_obj, 1)] for y in range(2*pop_size)]
+    F_evaluated = [[0 for x in range(0, num_obj, 1)] for y in range(pool_size)]
     for f in range(0, num_obj, 1):
-        for i in range(0, len(X_pool), 1):
+        for i in range(0, pool_size, 1):
             F_evaluated[i][f] = X_pool[i][num_params + f]
 
     [Fronts, Individuals] = ranking(F_evaluated, X_pool)
 
-
     # elite_population = [[0 for x in range(0, num_params, 1)] for y in range(pop_size)]
     elite_population = []
-    counter = 2*pop_size
+    counter = pool_size
     for front in Fronts:
         front_size = len(Fronts[front])
         if front_size<=counter:

@@ -2,8 +2,9 @@ from .pareto_tools import ranking
 import random
 
 
-def selection(num_obj, X_parent, pop_size, num_params):
+def selection(num_obj, X_parent, pop_size, num_params, seed):
 
+    random.seed(seed)
     X_sel = [[0 for x in range(num_params)] for y in range(pop_size)]
 
     # Perform TOURNAMENT SELECTION
@@ -23,7 +24,6 @@ def selection(num_obj, X_parent, pop_size, num_params):
     X_winners = []
     for i in range(0, pop_size, 1):
         # Choose 2 members randomly:
-        random.seed(i)
         rn = random.sample(range(0, pop_size-1), 2) # List of 2 random numbers
 
         # Now compare the two members:

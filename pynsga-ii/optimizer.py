@@ -18,6 +18,7 @@ from operations.mutation import mutate
 from operations.crossover_sbx import cross_sbx
 from operations.selection import selection
 from operations.elitism import elitism
+from operations.genetic_operator import genetic_operator
 
 from matplotlib import pyplot as plotter
 
@@ -38,17 +39,19 @@ class Optimizer:
         self.num_params = 2  # Must be set by user
         self.X = []
 
+        self.seed = 0
+
         # List of Objective Functions : Set in ./evaluate
 
-        self.crossover_index = 5  # Default  = 20
-        self.mutation_index = 5  # Default = 20
+        self.crossover_index = 20  # Default  = 20
+        self.mutation_index = 20  # Default = 20
 
         self.X_lo = [0]
         self.X_hi = [0]
 
     def solve(self):
         # STEP 0: Generate the INITIAL POPULATION
-        X_init = initialize(self.X_hi, self.X_lo, self.population_size, self.num_objectives)
+        X_init = initialize(self.X_hi, self.X_lo, self.population_size, self.num_objectives, self.seed)
 
         if True:
             if self.num_objectives >= 2:
@@ -60,17 +63,22 @@ class Optimizer:
                     print("GENERATION : " + str(i + 1))
 
                     # STEP 1 : Ranking & Tournament Selection
-                    X_sel = selection(self.num_objectives, X_parent, self.population_size, self.num_params)
+                    X_sel = selection(self.num_objectives, X_parent, self.population_size, self.num_params, self.seed)
+                    # print(X_sel)
 
-                    # STEP 2: Crossover
-                    X_cross = cross_sbx(self.num_objectives, X_sel, self.crossover_index, self.population_size,
-                                        self.num_params, i)
+                    # # STEP 2: Crossover
+                    # X_cross = cross_sbx(self.num_objectives, X_sel, self.X_hi, self.X_lo, self.crossover_index, self.population_size,
+                    #                     self.num_params, self.seed)
+                    #
+                    # # STEP 3: Mutation
+                    # X_mut = mutate(self.num_objectives, X_cross, self.X_hi, self.X_lo, self.mutation_index, self.population_size, self.seed)
 
-                    # STEP 3: Mutation
-                    X_mut = mutate(self.num_objectives, X_cross, self.X_hi, self.X_lo, self.mutation_index, self.population_size)
+                    #STEP : GENETIC OPERATION:
+                    X_GENOP = genetic_operator(self.num_objectives, X_sel, self.X_hi, self.X_lo, self.crossover_index, self.mutation_index, self.population_size, self.num_params, self.seed)
+
 
                     # STEP 4: Elitism
-                    ELITISM_RES = elitism(self.num_objectives, X_parent, X_mut, self.num_params)
+                    ELITISM_RES = elitism(self.num_objectives, X_parent, X_GENOP, self.num_params)
                     # print("ELITE: " + str(X_elite))
 
                     X_parent = ELITISM_RES[0][:self.population_size]
@@ -106,16 +114,18 @@ class Optimizer:
 # Un-comment the following code to test:
 def main():
     op = Optimizer()
-    op.population_size = 80  # Must be an even number
-    op.max_generations = 1
+    op.population_size = 100 # Must be an even number
+    op.max_generations = 1000
     op.num_params = 10
     op.num_objectives = 2
 
     # Define the objectives in the "Optimizer" class
 
     # Define the limits of the parameters here
-    op.X_lo = [0, -5, -5, -5, -5, -5, -5, -5, -5, -5]  # List of Upper bounds of Xi's  #   Must be set by user
+    op.X_lo = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # List of Upper bounds of Xi's  #   Must be set by user
     op.X_hi = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  # List of Lower bounds of Xi's  #   Must be set by user
+
+    op.seed = 1
 
     op.solve()
 
